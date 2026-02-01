@@ -14,9 +14,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { school = '', name = '', email = '', timestamp = '' } = req.body || {};
+    const { 
+      type,
+      school = '', 
+      name = '', 
+      email = '', 
+      timestamp = '',
+      rubricTitle = '',
+      subject = '',
+      grade = '',
+      levels = '',
+      criteriaCount = ''
+    } = req.body || {};
     
-    console.log('Notification request:', { school, name, email, timestamp });
+    console.log('Notification request:', req.body);
     
     // Slack Webhook URL（環境変数から取得）
     const webhookUrl = process.env.SLACK_WEBHOOK_URL;
@@ -26,8 +37,25 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true });
     }
 
-    // Slackメッセージを作成
-    const message = `📝 ルーブリック作成アプリ利用開始\n時刻: ${timestamp}\n学校名: ${school}\n名前: ${name}\nメール: ${email}`;
+    // 通知メッセージを種類に応じて作成
+    let message;
+    if (type === 'rubric_generated') {
+      message = `✅ ルーブリック生成完了
+時刻: ${timestamp}
+学校名: ${school}
+名前: ${name}
+ルーブリック名: ${rubricTitle}
+科目: ${subject}
+学年: ${grade}
+評価段階: ${levels}段階
+評価観点数: ${criteriaCount}個`;
+    } else {
+      message = `📝 ルーブリック作成アプリ利用開始
+時刻: ${timestamp}
+学校名: ${school}
+名前: ${name}
+メール: ${email}`;
+    }
 
     // Slackに送信
     const slackResponse = await fetch(webhookUrl, {
