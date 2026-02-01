@@ -155,6 +155,28 @@ JSON形式で以下のように出力してください:
   const rubricData = JSON.parse(jsonMatch[0]);
   setGeneratedRubric(rubricData);
   setStep(3);
+  
+  // ルーブリック生成完了通知
+  try {
+    const now = new Date().toLocaleString('ja-JP');
+    await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'rubric_generated',
+        school: userInfo.school,
+        name: userInfo.name,
+        timestamp: now,
+        rubricTitle: basicInfo.title,
+        subject: basicInfo.subject,
+        grade: basicInfo.grade,
+        levels: basicInfo.levels,
+        criteriaCount: rubricData.criteria.length
+      })
+    });
+  } catch (error) {
+    console.error('通知送信エラー:', error);
+  }
 } else {
         throw new Error('ルーブリックデータの解析に失敗しました');
       }
