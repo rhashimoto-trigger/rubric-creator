@@ -417,7 +417,6 @@ ${customInstruction}
                   onChange={(e) => setUserInfo({...userInfo, name: e.target.value})}
                 />
               </div>
-
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   メールアドレス <span className="text-red-500">*</span>
@@ -430,6 +429,7 @@ ${customInstruction}
                   onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
                 />
               </div>
+
               <div className="border-t border-gray-200 pt-4">
                 <label className="flex items-start gap-3 cursor-pointer">
                   <input
@@ -471,13 +471,12 @@ ${customInstruction}
                 onClick={submitUserInfo}
                 disabled={!userInfo.school || !userInfo.name || !userInfo.email || !userInfo.department || !agreedToTerms}
                 className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
-                >
+              >
                 次へ
               </button>
             </div>
           </div>
         )}
-
         {step === 1 && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">基本情報</h2>
