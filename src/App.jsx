@@ -437,29 +437,29 @@ ${customInstruction}
                     checked={agreedToTerms}
                     onChange={(e) => setAgreedToTerms(e.target.checked)}
                     className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
-                    />
+                  />
                   <span className="text-sm text-gray-700">
                     
-                    href="/terms.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
+                      href="/terms.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
                     >
-                    利用規約
-                  </a>
-                  および
-      
-                  href="/privacy.html"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-600 hover:underline"
-                  >
-                  プライバシーポリシー
-                </a>
-                に同意します <span className="text-red-500">*</span>
-              </span>
-            </label>
-          </div>
+                      利用規約
+                    </a>
+                    および
+                    
+                      href="/privacy.html"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:underline"
+                    >
+                      プライバシーポリシー
+                    </a>
+                    に同意します <span className="text-red-500">*</span>
+                  </span>
+                </label>
+              </div>
 
               {errorMessage && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
