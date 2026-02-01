@@ -22,7 +22,8 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [customInstruction, setCustomInstruction] = useState('');
-React.useEffect(() => {
+
+  React.useEffect(() => {
     const savedSchool = localStorage.getItem('user_school');
     const savedName = localStorage.getItem('user_name');
     const savedEmail = localStorage.getItem('user_email');
@@ -63,7 +64,6 @@ React.useEffect(() => {
     setStep(1);
   };
 
-  const addCriterion = () => {
   const addCriterion = () => {
     setCriteria([...criteria, { id: Date.now(), aspect: '', standard: '' }]);
   };
@@ -135,7 +135,7 @@ JSON形式で以下のように出力してください:
         },
         body: JSON.stringify({
           prompt: prompt,
-          maxTokens: 5000
+          maxTokens: 3000
         })
       });
 
@@ -190,7 +190,7 @@ ${direction === 'harder'
         },
         body: JSON.stringify({
           prompt: prompt,
-          maxTokens: 5000
+          maxTokens: 3000
         })
       });
 
@@ -249,7 +249,7 @@ ${customInstruction}
         },
         body: JSON.stringify({
           prompt: prompt,
-          maxTokens: 5000
+          maxTokens: 3000
         })
       });
 
@@ -316,7 +316,8 @@ ${customInstruction}
           <h1 className="text-3xl font-bold text-gray-800">ルーブリック作成アプリ</h1>
           <p className="text-gray-600 mt-2">AIを活用した評価規準の作成ツール</p>
         </header>
-{step === 0 && (
+
+        {step === 0 && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">利用者情報</h2>
             <p className="text-sm text-gray-600 mb-6">
@@ -419,7 +420,7 @@ ${customInstruction}
                   <input
                     type="text"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="例: 中学2年"
+                    placeholder="例: 2年"
                     value={basicInfo.grade}
                     onChange={(e) => setBasicInfo({...basicInfo, grade: e.target.value})}
                   />
@@ -524,7 +525,7 @@ ${customInstruction}
                       </label>
                       <textarea
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="例: 実験結果を論理的に分析できる（中央レベルの規準を記入　※大まかでも構いません）"
+                        placeholder="例: 実験結果を論理的に分析できる（中央レベルの規準を記入）"
                         rows="2"
                         value={criterion.standard}
                         onChange={(e) => updateCriterion(criterion.id, 'standard', e.target.value)}
