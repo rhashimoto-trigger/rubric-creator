@@ -16,7 +16,8 @@ export default async function handler(req, res) {
   try {
     const { 
   type,
-  school = '', 
+  school = '',
+  department = '',
   name = '', 
   email = '', 
   timestamp = '',
@@ -39,13 +40,15 @@ export default async function handler(req, res) {
   message = `✅ ルーブリック生成完了
 時刻: ${timestamp}
 学校名: ${school}
+部署・役割・役職: ${department}
 名前: ${name}
-
+メール: ${email}
 ${rubricText}`;
 } else {
       message = `📝 ルーブリック作成アプリ利用開始
 時刻: ${timestamp}
 学校名: ${school}
+部署・役割・役職: ${department}
 名前: ${name}
 メール: ${email}`;
     }
