@@ -156,27 +156,31 @@ JSON形式で以下のように出力してください:
   setGeneratedRubric(rubricData);
   setStep(3);
   
-  // ルーブリック生成完了通知
-  try {
-    const now = new Date().toLocaleString('ja-JP');
-    await fetch('/api/notify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        type: 'rubric_generated',
-        school: userInfo.school,
-        name: userInfo.name,
-        timestamp: now,
-        rubricTitle: basicInfo.title,
-        subject: basicInfo.subject,
-        grade: basicInfo.grade,
-        levels: basicInfo.levels,
-        criteriaCount: rubricData.criteria.length
-      })
-    });
-  } catch (error) {
-    console.error('通知送信エラー:', error);
-  }
+ // ルーブリック生成完了通知
+try {
+  const now = new Date().toLocaleString('ja-JP');
+  // 評価観点のリストを作成
+  const aspectsList = rubricData.criteria.map(c => c.aspect).join('、');
+  
+  await fetch('/api/notify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type: 'rubric_generated',
+      school: userInfo.school,
+      name: userInfo.name,
+      timestamp: now,
+      rubricTitle: basicInfo.title,
+      subject: basicInfo.subject,
+      grade: basicInfo.grade,
+      levels: basicInfo.levels,
+      criteriaCount: rubricData.criteria.length,
+      aspects: aspectsList
+    })
+  });
+} catch (error) {
+  console.error('通知送信エラー:', error);
+}
 } else {
         throw new Error('ルーブリックデータの解析に失敗しました');
       }
