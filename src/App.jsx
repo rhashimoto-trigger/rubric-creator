@@ -23,6 +23,7 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [customInstruction, setCustomInstruction] = useState('');
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   React.useEffect(() => {
     const savedSchool = localStorage.getItem('user_school');
@@ -43,6 +44,11 @@ export default function App() {
   const submitUserInfo = async () => {
   if (!userInfo.school.trim() || !userInfo.name.trim() || !userInfo.email.trim()) {
     setErrorMessage('すべての項目を入力してください');
+    return;
+  }
+
+  if (!agreedToTerms) {  // ← この3行を追加
+    setErrorMessage('利用規約とプライバシーポリシーに同意してください');
     return;
   }
 
@@ -424,6 +430,36 @@ ${customInstruction}
                   onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
                 />
               </div>
+              <div className="border-t border-gray-200 pt-4">
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={agreedToTerms}
+                    onChange={(e) => setAgreedToTerms(e.target.checked)}
+                    className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                    />
+                  <span className="text-sm text-gray-700">
+                    
+                    href="/terms.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline"
+                    >
+                    利用規約
+                  </a>
+                  および
+      
+                  href="/privacy.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                  >
+                  プライバシーポリシー
+                </a>
+                に同意します <span className="text-red-500">*</span>
+              </span>
+            </label>
+          </div>
 
               {errorMessage && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
@@ -433,7 +469,7 @@ ${customInstruction}
 
               <button
                 onClick={submitUserInfo}
-                disabled={!userInfo.school || !userInfo.name || !userInfo.email || !userInfo.department}
+                disabled={!userInfo.school || !userInfo.name || !userInfo.email || !userInfo.department || !agreedToTerms}
                 className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
                 >
                 次へ
