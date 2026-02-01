@@ -49,8 +49,6 @@ export default function App() {
       return;
     }
 
-    const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-
     setIsGenerating(true);
     setErrorMessage('');
     try {
@@ -81,19 +79,14 @@ JSON形式で以下のように出力してください:
   ]
 }`;
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
+      const response = await fetch('/api/generate', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01"
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [
-            { role: "user", content: prompt }
-          ],
+          prompt: prompt,
+          maxTokens: 1000
         })
       });
 
@@ -122,8 +115,6 @@ JSON形式で以下のように出力してください:
   };
 
   const adjustDifficulty = async (direction) => {
-    const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-
     setIsGenerating(true);
     setErrorMessage('');
     try {
@@ -143,19 +134,14 @@ ${direction === 'harder'
 各レベルの説明は約${basicInfo.charCount}文字程度で記述してください。
 同じJSON形式で出力してください。`;
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
+      const response = await fetch('/api/generate', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01"
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [
-            { role: "user", content: prompt }
-          ],
+          prompt: prompt,
+          maxTokens: 1000
         })
       });
 
@@ -188,8 +174,6 @@ ${direction === 'harder'
       return;
     }
 
-    const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY;
-
     setIsGenerating(true);
     setErrorMessage('');
     try {
@@ -209,19 +193,14 @@ ${customInstruction}
 各レベルの説明は約${basicInfo.charCount}文字程度で記述してください。
 同じJSON形式で出力してください。`;
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
+      const response = await fetch('/api/generate', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01"
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          messages: [
-            { role: "user", content: prompt }
-          ],
+          prompt: prompt,
+          maxTokens: 1000
         })
       });
 
@@ -328,7 +307,7 @@ ${customInstruction}
                   <input
                     type="text"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="例: 高校2年"
+                    placeholder="例: 中学2年"
                     value={basicInfo.grade}
                     onChange={(e) => setBasicInfo({...basicInfo, grade: e.target.value})}
                   />
