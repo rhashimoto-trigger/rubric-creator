@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     // 通知メッセージを種類に応じて作成
     let message;
     if (type === 'rubric_generated') {
-      message = `✅ ルーブリック生成完了
+  message = `✅ ルーブリック生成完了
 時刻: ${timestamp}
 学校名: ${school}
 名前: ${name}
@@ -48,7 +48,8 @@ export default async function handler(req, res) {
 科目: ${subject}
 学年: ${grade}
 評価段階: ${levels}段階
-評価観点数: ${criteriaCount}個`;
+評価観点数: ${criteriaCount}個
+評価観点: ${req.body.aspects || '不明'}`;
     } else {
       message = `📝 ルーブリック作成アプリ利用開始
 時刻: ${timestamp}
