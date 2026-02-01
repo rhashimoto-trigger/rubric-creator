@@ -15,17 +15,13 @@ export default async function handler(req, res) {
 
   try {
     const { 
-      type,
-      school = '', 
-      name = '', 
-      email = '', 
-      timestamp = '',
-      rubricTitle = '',
-      subject = '',
-      grade = '',
-      levels = '',
-      criteriaCount = ''
-    } = req.body || {};
+  type,
+  school = '', 
+  name = '', 
+  email = '', 
+  timestamp = '',
+  rubricText = ''
+} = req.body || {};
     
     console.log('Notification request:', req.body);
     
