@@ -764,7 +764,7 @@ ${customInstruction}
                       onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A6FE6'}
                       onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4880FF'}
                       >
-                      AI-Bouで添削を始める →
+                      AI-Bouをトライアルで利用してみる
                     </a>
                   </div>
                 </div>
