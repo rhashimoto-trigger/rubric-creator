@@ -1,8 +1,10 @@
 export default async function handler(req, res) {
+  // CORSヘッダーを設定
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
+  // プリフライトリクエストへの対応
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
@@ -12,32 +14,18 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { 
-      type, 
-      school = '', 
-      name = '', 
-      email = '', 
-      timestamp = '', 
-      rubricTitle = '', 
-      subject = '', 
-      grade = '', 
-      levels = '', 
-      criteriaCount = '' 
-    } = req.body || {};
+    console.log('Notification received:', req.body);
     
-    console.log('Notification request:', { type, school, name, email, timestamp });
-    
-    // 一旦通知機能はスキップして、成功を返す
+    // 一旦、単純に成功を返す（Slack送信なし）
     return res.status(200).json({ 
       success: true, 
-      message: 'User info saved (notification disabled)' 
+      message: 'Notification logged successfully' 
     });
     
   } catch (error) {
     console.error('Error:', error);
-    return res.status(200).json({ 
-      success: true, 
-      message: 'Error occurred but continuing',
+    return res.status(500).json({ 
+      success: false, 
       error: error.message 
     });
   }
