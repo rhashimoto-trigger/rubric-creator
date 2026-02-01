@@ -39,3 +39,22 @@ export default async function handler(req, res) {
     return res.status(200).json({ success: true }); // エラーでもアプリは続行
   }
 }
+```
+
+## Vercelの環境変数設定
+
+Vercelダッシュボードで以下の環境変数を設定してください：
+
+1. **Settings** → **Environment Variables** で追加：
+   - `ANTHROPIC_API_KEY`: Anthropic APIキー（必須）
+   - `SLACK_WEBHOOK_URL`: Slack Webhook URL（オプション）
+
+## ファイル構成
+```
+your-repository/
+├── api/
+│   ├── generate.js  ← ルーブリック生成API
+│   └── notify.js    ← Slack通知API
+├── src/
+│   └── App.jsx
+└── ...
