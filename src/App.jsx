@@ -61,7 +61,10 @@ export default function App() {
 評価観点と評価規準:
 ${criteria.map((c, i) => `${i + 1}. 観点「${c.aspect}」- ${c.standard}`).join('\n')}
 
+重要: 上記の評価規準は、評価の中央レベル（${basicInfo.levels}段階の場合、レベル${Math.ceil(basicInfo.levels / 2)}相当）を想定した内容です。
+
 各観点について、レベル${basicInfo.levels}（最高）からレベル1（最低）までの具体的な評価規準を作成してください。
+中央レベルの規準を基準として、上位レベルはより高度に、下位レベルはより基礎的な内容にしてください。
 各レベルの説明は約${basicInfo.charCount}文字程度で記述してください。
 各レベルには、生徒の具体的な行動や成果物の特徴を明確に記述してください。
 
@@ -404,7 +407,7 @@ ${customInstruction}
                       </label>
                       <textarea
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="例: 実験結果を論理的に分析できる（中央レベルの規準を記入）"
+                        placeholder="例: 実験結果を論理的に分析できる（中央レベルの規準を記入　※大まかでも構いません）"
                         rows="2"
                         value={criterion.standard}
                         onChange={(e) => updateCriterion(criterion.id, 'standard', e.target.value)}
