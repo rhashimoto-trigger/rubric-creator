@@ -33,7 +33,7 @@ export default function App() {
     if (savedSchool && savedName && savedEmail) {
       setUserInfo({
         school: savedSchool,
-        department: savedDepartment || ''.
+        department: savedDepartment || '',
         name: savedName,
         email: savedEmail
       });
