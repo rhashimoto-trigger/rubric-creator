@@ -14,19 +14,37 @@ export default async function handler(req, res) {
   }
 
   try {
-    console.log('Notification received:', req.body);
+    const { school = '', name = '', email = '', timestamp = '' } = req.body || {};
     
-    // 一旦、単純に成功を返す（Slack送信なし）
-    return res.status(200).json({ 
-      success: true, 
-      message: 'Notification logged successfully' 
+    console.log('Notification request:', { school, name, email, timestamp });
+    
+    // Slack Webhook URL（環境変数から取得）
+    const webhookUrl = process.env.SLACK_WEBHOOK_URL;
+    
+    if (!webhookUrl) {
+      console.log('SLACK_WEBHOOK_URL not configured');
+      return res.status(200).json({ success: true });
+    }
+
+    // Slackメッセージを作成
+    const message = `📝 ルーブリック作成アプリ利用開始\n時刻: ${timestamp}\n学校名: ${school}\n名前: ${name}\nメール: ${email}`;
+
+    // Slackに送信
+    const slackResponse = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: message })
     });
+
+    if (!slackResponse.ok) {
+      console.error('Slack error:', slackResponse.status);
+    }
+
+    return res.status(200).json({ success: true });
     
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ 
-      success: false, 
-      error: error.message 
-    });
+    // エラーでもアプリは続行
+    return res.status(200).json({ success: true });
   }
 }
