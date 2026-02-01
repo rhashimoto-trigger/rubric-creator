@@ -192,7 +192,9 @@ try {
     body: JSON.stringify({
       type: 'rubric_generated',
       school: userInfo.school,
+      department: userInfo.department,
       name: userInfo.name,
+      email: userInfo.email,
       timestamp: now,
       rubricText: rubricText
     })
