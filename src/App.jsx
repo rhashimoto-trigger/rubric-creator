@@ -744,7 +744,7 @@ ${customInstruction}
               <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
-                    <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-2xl">
+                    <div className="w-12 h-12 rounded-lg flex items-center justify-center text-2xl" style={{ backgroundColor: '#4880FF' }}>
                       ✓
                     </div>
                   </div>
@@ -759,8 +759,11 @@ ${customInstruction}
                       href="https://ai-bou.jp/trial"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
-                    >
+                      className="inline-flex items-center gap-2 text-white px-6 py-3 rounded-lg font-medium transition"
+                      style={{ backgroundColor: '#4880FF' }}
+                      onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3A6FE6'}
+                      onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#4880FF'}
+                      >
                       AI-Bouで添削を始める →
                     </a>
                   </div>
