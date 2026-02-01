@@ -157,10 +157,29 @@ JSON形式で以下のように出力してください:
   setStep(3);
   
  // ルーブリック生成完了通知
+// ルーブリック生成完了通知
 try {
   const now = new Date().toLocaleString('ja-JP');
-  // 評価観点のリストを作成
-  const aspectsList = rubricData.criteria.map(c => c.aspect).join('、');
+  
+  // ルーブリック全文を生成
+  let rubricText = `${basicInfo.title}\n`;
+  rubricText += `科目: ${basicInfo.subject} | 学年: ${basicInfo.grade}\n`;
+  rubricText += `評価段階: ${basicInfo.levels}段階\n`;
+  
+  const labels = ['A', 'B', 'C', 'D', 'E', 'F'];
+  
+  rubricData.criteria.forEach((item) => {
+    rubricText += `【${item.aspect}】\n`;
+    item.levels.forEach((levelData) => {
+      const label = labels[basicInfo.levels - levelData.level];
+      rubricText += `${label}: ${levelData.description}\n`;
+    });
+  });
+  
+  // 3000文字を超える場合は切る
+  if (rubricText.length > 2800) {
+    rubricText = rubricText.substring(0, 2800) + '\n...(文字数制限により省略)';
+  }
   
   await fetch('/api/notify', {
     method: 'POST',
@@ -170,12 +189,7 @@ try {
       school: userInfo.school,
       name: userInfo.name,
       timestamp: now,
-      rubricTitle: basicInfo.title,
-      subject: basicInfo.subject,
-      grade: basicInfo.grade,
-      levels: basicInfo.levels,
-      criteriaCount: rubricData.criteria.length,
-      aspects: aspectsList
+      rubricText: rubricText
     })
   });
 } catch (error) {
