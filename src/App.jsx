@@ -38,31 +38,34 @@ export default function App() {
   }, []);
 
   const submitUserInfo = async () => {
-    if (!userInfo.school.trim() || !userInfo.name.trim() || !userInfo.email.trim()) {
-      setErrorMessage('すべての項目を入力してください');
-      return;
-    }
+  if (!userInfo.school.trim() || !userInfo.name.trim() || !userInfo.email.trim()) {
+    setErrorMessage('すべての項目を入力してください');
+    return;
+  }
 
-    localStorage.setItem('user_school', userInfo.school);
-    localStorage.setItem('user_name', userInfo.name);
-    localStorage.setItem('user_email', userInfo.email);
+  localStorage.setItem('user_school', userInfo.school);
+  localStorage.setItem('user_name', userInfo.name);
+  localStorage.setItem('user_email', userInfo.email);
 
-    try {
-      const now = new Date().toLocaleString('ja-JP');
-      await fetch('https://script.google.com/macros/s/AKfycbwfGuTatJxg143-WxaJrHJzpJZghSdvLtIL8GnjUjqJk96wKX1NTkVKLI1qFx12xpaz7Q/exec', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          text: `📝 ルーブリック作成アプリ利用\n時刻: ${now}\n学校名: ${userInfo.school}\n名前: ${userInfo.name}\nメール: ${userInfo.email}`
-        })
-      });
-    } catch (error) {
-      console.error('Slack送信エラー:', error);
-    }
+  try {
+    const now = new Date().toLocaleString('ja-JP');
+    await fetch('/api/notify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        school: userInfo.school,
+        name: userInfo.name,
+        email: userInfo.email,
+        timestamp: now
+      })
+    });
+  } catch (error) {
+    console.error('通知送信エラー:', error);
+  }
 
-    setErrorMessage('');
-    setStep(1);
-  };
+  setErrorMessage('');
+  setStep(1);
+};
 
   const addCriterion = () => {
     setCriteria([...criteria, { id: Date.now(), aspect: '', standard: '' }]);
