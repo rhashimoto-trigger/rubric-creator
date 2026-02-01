@@ -2,7 +2,12 @@ import React, { useState } from 'react';
 import { Download, Plus, Trash2, RefreshCw, Home } from 'lucide-react';
 
 export default function App() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
+  const [userInfo, setUserInfo] = useState({
+    school: '',
+    name: '',
+    email: ''
+  });
   const [basicInfo, setBasicInfo] = useState({
     subject: '',
     title: '',
@@ -17,7 +22,48 @@ export default function App() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [customInstruction, setCustomInstruction] = useState('');
+React.useEffect(() => {
+    const savedSchool = localStorage.getItem('user_school');
+    const savedName = localStorage.getItem('user_name');
+    const savedEmail = localStorage.getItem('user_email');
+    
+    if (savedSchool && savedName && savedEmail) {
+      setUserInfo({
+        school: savedSchool,
+        name: savedName,
+        email: savedEmail
+      });
+    }
+  }, []);
 
+  const submitUserInfo = async () => {
+    if (!userInfo.school.trim() || !userInfo.name.trim() || !userInfo.email.trim()) {
+      setErrorMessage('すべての項目を入力してください');
+      return;
+    }
+
+    localStorage.setItem('user_school', userInfo.school);
+    localStorage.setItem('user_name', userInfo.name);
+    localStorage.setItem('user_email', userInfo.email);
+
+    try {
+      const now = new Date().toLocaleString('ja-JP');
+      await fetch('https://script.google.com/macros/s/AKfycbwfGuTatJxg143-WxaJrHJzpJZghSdvLtIL8GnjUjqJk96wKX1NTkVKLI1qFx12xpaz7Q/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: `📝 ルーブリック作成アプリ利用\n時刻: ${now}\n学校名: ${userInfo.school}\n名前: ${userInfo.name}\nメール: ${userInfo.email}`
+        })
+      });
+    } catch (error) {
+      console.error('Slack送信エラー:', error);
+    }
+
+    setErrorMessage('');
+    setStep(1);
+  };
+
+  const addCriterion = () => {
   const addCriterion = () => {
     setCriteria([...criteria, { id: Date.now(), aspect: '', standard: '' }]);
   };
@@ -270,7 +316,71 @@ ${customInstruction}
           <h1 className="text-3xl font-bold text-gray-800">ルーブリック作成アプリ</h1>
           <p className="text-gray-600 mt-2">AIを活用した評価規準の作成ツール</p>
         </header>
+{step === 0 && (
+          <div className="bg-white rounded-lg shadow-sm p-6">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6">利用者情報</h2>
+            <p className="text-sm text-gray-600 mb-6">
+              より良いサービス提供のため、利用者情報をご入力ください。2回目以降は自動で入力されます。
+            </p>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  学校名 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="例: ○○学校"
+                  value={userInfo.school}
+                  onChange={(e) => setUserInfo({...userInfo, school: e.target.value})}
+                />
+              </div>
 
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  お名前 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="例: 山田太郎"
+                  value={userInfo.name}
+                  onChange={(e) => setUserInfo({...userInfo, name: e.target.value})}
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  メールアドレス <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="例: example@school.jp"
+                  value={userInfo.email}
+                  onChange={(e) => setUserInfo({...userInfo, email: e.target.value})}
+                />
+              </div>
+
+              {errorMessage && (
+                <div className="p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <p className="text-sm text-red-700">{errorMessage}</p>
+                </div>
+              )}
+
+              <button
+                onClick={submitUserInfo}
+                disabled={!userInfo.school || !userInfo.name || !userInfo.email}
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+              >
+                次へ
+              </button>
+            </div>
+          </div>
+        )}
+
+        {step === 1 && (
         {step === 1 && (
           <div className="bg-white rounded-lg shadow-sm p-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">基本情報</h2>
@@ -348,13 +458,21 @@ ${customInstruction}
                 </select>
               </div>
 
-              <button
-                onClick={() => setStep(2)}
-                disabled={!basicInfo.title || !basicInfo.subject || !basicInfo.grade}
-                className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
-              >
-                次へ
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setStep(0)}
+                  className="flex-1 bg-gray-200 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-300 transition"
+                >
+                  戻る
+                </button>
+                <button
+                  onClick={() => setStep(2)}
+                  disabled={!basicInfo.title || !basicInfo.subject || !basicInfo.grade}
+                  className="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                >
+                  次へ
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -567,7 +685,7 @@ ${customInstruction}
               </button>
               <button
                 onClick={() => {
-                  setStep(1);
+                  setStep(0);
                   setGeneratedRubric(null);
                   setCriteria([{ id: 1, aspect: '', standard: '' }]);
                   setBasicInfo({ subject: '', title: '', grade: '', levels: 5, charCount: '50' });
