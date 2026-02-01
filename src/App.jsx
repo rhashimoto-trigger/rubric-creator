@@ -419,7 +419,7 @@ ${customInstruction}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  メールアドレス <span className="text-red-500">*</span>
+                  メールアドレス（学校でご利用のアドレスをご入力下さい） <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="email"
