@@ -16,45 +16,35 @@ export default async function handler(req, res) {
   try {
     const { school, name, email, timestamp } = req.body;
     
+    console.log('Notification request received:', { school, name, email, timestamp });
+    
     // Slack Webhook URL（環境変数から取得）
     const webhookUrl = process.env.SLACK_WEBHOOK_URL;
     
     if (!webhookUrl) {
-      console.error('SLACK_WEBHOOK_URL not configured');
-      return res.status(200).json({ success: true }); // 通知失敗でもアプリは続行
+      console.log('SLACK_WEBHOOK_URL not configured - skipping notification');
+      return res.status(200).json({ success: true, message: 'Notification skipped' });
     }
 
     const message = `📝 ルーブリック作成アプリ利用\n時刻: ${timestamp}\n学校名: ${school}\n名前: ${name}\nメール: ${email}`;
 
     // Slackに送信
-    await fetch(webhookUrl, {
+    const slackResponse = await fetch(webhookUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: message })
     });
 
+    if (!slackResponse.ok) {
+      console.error('Slack API error:', slackResponse.status, await slackResponse.text());
+    } else {
+      console.log('Slack notification sent successfully');
+    }
+
     return res.status(200).json({ success: true });
   } catch (error) {
-    console.error('Slack notification error:', error);
-    return res.status(200).json({ success: true }); // エラーでもアプリは続行
+    console.error('Notification error:', error.message, error.stack);
+    // エラーでもアプリは続行させる
+    return res.status(200).json({ success: true, error: error.message });
   }
 }
-```
-
-## Vercelの環境変数設定
-
-Vercelダッシュボードで以下の環境変数を設定してください：
-
-1. **Settings** → **Environment Variables** で追加：
-   - `ANTHROPIC_API_KEY`: Anthropic APIキー（必須）
-   - `SLACK_WEBHOOK_URL`: Slack Webhook URL（オプション）
-
-## ファイル構成
-```
-your-repository/
-├── api/
-│   ├── generate.js  ← ルーブリック生成API
-│   └── notify.js    ← Slack通知API
-├── src/
-│   └── App.jsx
-└── ...
