@@ -809,7 +809,7 @@ ${customInstruction}
               </button>
               <button
                 onClick={() => {
-                  setStep(0);
+                  setStep(1);
                   setGeneratedRubric(null);
                   setCriteria([{ id: 1, aspect: '', standard: '' }]);
                   setBasicInfo({ subject: '', title: '', grade: '', levels: 5, charCount: '50' });
