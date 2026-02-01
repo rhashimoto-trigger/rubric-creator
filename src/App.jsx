@@ -400,11 +400,11 @@ ${customInstruction}
                     
                     <div>
                       <label className="block text-sm font-medium text-gray-600 mb-1">
-                        評価規準（概要） <span className="text-red-500">*</span>
+                        評価規準（中央レベル） <span className="text-red-500">*</span>
                       </label>
                       <textarea
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="例: 実験結果を論理的に分析し、科学的根拠に基づいて考察できる"
+                        placeholder="例: 実験結果を論理的に分析できる（中央レベルの規準を記入）"
                         rows="2"
                         value={criterion.standard}
                         onChange={(e) => updateCriterion(criterion.id, 'standard', e.target.value)}
