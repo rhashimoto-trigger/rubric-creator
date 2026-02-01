@@ -86,7 +86,7 @@ JSON形式で以下のように出力してください:
         },
         body: JSON.stringify({
           prompt: prompt,
-          maxTokens: 1000
+          maxTokens: 5000
         })
       });
 
@@ -141,7 +141,7 @@ ${direction === 'harder'
         },
         body: JSON.stringify({
           prompt: prompt,
-          maxTokens: 1000
+          maxTokens: 5000
         })
       });
 
@@ -200,7 +200,7 @@ ${customInstruction}
         },
         body: JSON.stringify({
           prompt: prompt,
-          maxTokens: 1000
+          maxTokens: 5000
         })
       });
 
