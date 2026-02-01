@@ -741,6 +741,31 @@ ${customInstruction}
                   </tbody>
                 </table>
               </div>
+              <div className="mt-6 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0">
+                    <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center text-2xl">
+                      ✓
+                    </div>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">
+                      このルーブリックを使って添削してみませんか？
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-4">
+                      AI-Bouなら、作成したルーブリックを使って生徒の提出物を自動で添削・評価できます。評価の一貫性を保ちながら、添削時間を大幅に削減できます。
+                    </p>
+                    <a
+                      href="https://ai-bou.jp/trial"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition"
+                    >
+                      AI-Bouで添削を始める →
+                    </a>
+                  </div>
+                </div>
+              </div>
 
               <div className="mt-6 border-t border-gray-200 pt-6">
                 <h3 className="text-lg font-semibold text-gray-800 mb-3">カスタム修正</h3>
