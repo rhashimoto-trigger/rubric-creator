@@ -5,6 +5,7 @@ export default function App() {
   const [step, setStep] = useState(0);
   const [userInfo, setUserInfo] = useState({
     school: '',
+    department: '',
     name: '',
     email: ''
   });
@@ -25,12 +26,14 @@ export default function App() {
 
   React.useEffect(() => {
     const savedSchool = localStorage.getItem('user_school');
+    const savedDepartment = localStorage.getItem('user_department');
     const savedName = localStorage.getItem('user_name');
     const savedEmail = localStorage.getItem('user_email');
     
     if (savedSchool && savedName && savedEmail) {
       setUserInfo({
         school: savedSchool,
+        department: savedDepartment || ''.
         name: savedName,
         email: savedEmail
       });
@@ -44,6 +47,7 @@ export default function App() {
   }
 
   localStorage.setItem('user_school', userInfo.school);
+  localStorage.setItem('user_department', userInfo.department);
   localStorage.setItem('user_name', userInfo.name);
   localStorage.setItem('user_email', userInfo.email);
 
@@ -54,6 +58,7 @@ export default function App() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         school: userInfo.school,
+        department: userInfo.department,
         name: userInfo.name,
         email: userInfo.email,
         timestamp: now
@@ -380,7 +385,18 @@ ${customInstruction}
                   onChange={(e) => setUserInfo({...userInfo, school: e.target.value})}
                 />
               </div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  部署・役割・役職 <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="例: 教務部・英語科主任"
+                  value={userInfo.department}
+                  onChange={(e) => setUserInfo({...userInfo, department: e.target.value})}
+                  />
+              </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   お名前 <span className="text-red-500">*</span>
@@ -415,9 +431,9 @@ ${customInstruction}
 
               <button
                 onClick={submitUserInfo}
-                disabled={!userInfo.school || !userInfo.name || !userInfo.email}
+                disabled={!userInfo.school || !userInfo.name || !userInfo.email || !userInfo.department}
                 className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
-              >
+                >
                 次へ
               </button>
             </div>
