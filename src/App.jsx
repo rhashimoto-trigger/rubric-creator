@@ -439,7 +439,7 @@ ${customInstruction}
                     className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-sm text-gray-700">
-                    
+                    <a 
                       href="/terms.html"
                       target="_blank"
                       rel="noopener noreferrer"
@@ -448,7 +448,7 @@ ${customInstruction}
                       利用規約
                     </a>
                     および
-                    
+                    <a 
                       href="/privacy.html"
                       target="_blank"
                       rel="noopener noreferrer"
