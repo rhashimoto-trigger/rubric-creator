@@ -44,13 +44,9 @@ export default async function handler(req, res) {
 時刻: ${timestamp}
 学校名: ${school}
 名前: ${name}
-ルーブリック名: ${rubricTitle}
-科目: ${subject}
-学年: ${grade}
-評価段階: ${levels}段階
-評価観点数: ${criteriaCount}個
-評価観点: ${req.body.aspects || '不明'}`;
-    } else {
+
+${rubricText}`;
+} else {
       message = `📝 ルーブリック作成アプリ利用開始
 時刻: ${timestamp}
 学校名: ${school}
