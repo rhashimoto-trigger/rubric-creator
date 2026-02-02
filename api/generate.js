@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'gpt-5-mini',  // ← GPT-5 mini
-        max_tokens: maxTokens,
+        max_completion_tokens: maxTokens,
         messages: [
           {
             role: 'user',
