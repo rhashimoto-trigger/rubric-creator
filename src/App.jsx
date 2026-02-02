@@ -750,7 +750,7 @@ ${customInstruction}
                   </div>
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-gray-900 mb-2">
-                      このルーブリックを使って添削してみませんか？
+                      このルーブリックを使ってレポート、手書き文書などを自動で評価・添削してみませんか？
                     </h3>
                     <p className="text-sm text-gray-600 mb-4">
                       AI-Bouなら、作成したルーブリックを使って生徒の提出物を自動で添削・評価できます。評価の一貫性を保ちながら、添削時間を大幅に削減できます。
