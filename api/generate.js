@@ -1,14 +1,11 @@
 export default async function handler(req, res) {
-  // CORSヘッダーを設定
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // プリフライトリクエストへの対応
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
-
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -20,23 +17,19 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: { message: 'プロンプトが指定されていません' } });
     }
 
-    // Anthropic API key（環境変数から取得）
-    const apiKey = process.env.ANTHROPIC_API_KEY;
-
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ error: { message: 'APIキーが設定されていません' } });
     }
 
-    // Anthropic APIを呼び出し
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
+        'Authorization': `Bearer ${apiKey}`
       },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'gpt-5-mini',  // ← GPT-5 mini
         max_tokens: maxTokens,
         messages: [
           {
@@ -50,7 +43,7 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (!response.ok) {
-      console.error('Anthropic API error:', data);
+      console.error('OpenAI API error:', data);
       return res.status(response.status).json({ 
         error: { 
           message: data.error?.message || 'API呼び出しに失敗しました' 
@@ -58,7 +51,17 @@ export default async function handler(req, res) {
       });
     }
 
-    return res.status(200).json(data);
+    // レスポンス形式を統一（Anthropic形式に合わせる）
+    const formattedData = {
+      content: [
+        {
+          type: 'text',
+          text: data.choices[0].message.content
+        }
+      ]
+    };
+
+    return res.status(200).json(formattedData);
 
   } catch (error) {
     console.error('Error in generate API:', error);
